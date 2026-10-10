@@ -15,6 +15,8 @@ public class Obstacle : MonoBehaviour
 
     public float maxSpinSpeed = 10.0f;
 
+    private Soundmanager sm;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is createdvoid Start()
     void Start()
     {
@@ -38,6 +40,8 @@ public class Obstacle : MonoBehaviour
 
         rb.AddTorque(randomTorque);
 
+        sm = FindAnyObjectByType<Soundmanager>();
+
     }
 
 
@@ -49,4 +53,11 @@ public class Obstacle : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Obstacle"))
+        {
+            sm.PlayObstacleSFX();
+        }
+    }
 }

@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
 
     private const string HighScoreKey = "HighScore";
 
+
+    private Soundmanager sm;
+
     private void Awake()
     {
 
@@ -103,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
 
-        
+        sm = FindAnyObjectByType<Soundmanager>();
     }
 
 
@@ -184,7 +187,7 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-
+            sm.PlayLoseSFX();
             Debug.Log("Game Over!");
 
             float savedHighScore = PlayerPrefs.GetFloat(HighScoreKey, 0f);
