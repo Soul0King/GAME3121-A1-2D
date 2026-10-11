@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -42,6 +43,22 @@ public class PlayerController : MonoBehaviour
 
 
     private Soundmanager sm;
+
+    [Header("Distance Settings")]
+    [SerializeField] private float maxDistance = 10f;  
+    [SerializeField] private float minDistance = 1f;   
+
+    [Header("Pitch Settings")]
+    [SerializeField] private float minPitch = 1.0f;
+    [SerializeField] private float maxPitch = 2.5f;
+
+    [Header("Speed Settings")]
+    [SerializeField] private float maxRepeatDelay = 1.0f; 
+    [SerializeField] private float minRepeatDelay = 0.1f;
+
+    [SerializeField] private AudioSource audioSource;
+
+    private float beepTimer;
 
     private void Awake()
     {
@@ -100,7 +117,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is createdvoid Start()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
@@ -216,5 +233,26 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            float distance = Vector2.Distance(transform.position, collision.transform.position);
+
+            float proximity = 1f - ((distance - minDistance) / (maxDistance - minDistance));
+
+            audioSource.pitch = Mathf.Lerp(minPitch, maxPitch, proximity);
+
+            float currentDelay = Mathf.Lerp(maxRepeatDelay, minRepeatDelay, proximity);
+
+            beepTimer += Time.deltaTime;
+            if (beepTimer >= currentDelay)
+            {
+                audioSource.Play();
+                beepTimer = 0f;
+            }
+        }
     }
 }
