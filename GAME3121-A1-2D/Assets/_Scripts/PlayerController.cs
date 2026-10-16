@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private float score = 0f;
     private float elapsedTime = 0f;
 
-    public GameObject boosterFlame;
+    public GameObject trail;
 
     [SerializeField]
     private PanelRenderer panel;
@@ -171,14 +171,14 @@ public class PlayerController : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
 
-            boosterFlame.SetActive(true);
+            trail.SetActive(true);
 
         }
 
         else if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
 
-            boosterFlame.SetActive(false);
+            trail.SetActive(false);
 
         }
 
